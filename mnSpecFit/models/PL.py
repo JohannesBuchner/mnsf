@@ -2,6 +2,7 @@ from mnSpecFit.Model import Model
 from numpy import exp, power, zeros
 from multiFit.priorGen import *
 
+import numexpr as ne
 
 
 
@@ -17,8 +18,8 @@ class PL(Model):
 
       def pl(x,logA,index):
          
-         val = power(10.,logA)*power(x/300.,index)
-         return val
+         return ne.evaluate( '10.**logA *  (x/300.)**index' )
+         
 
       
 
