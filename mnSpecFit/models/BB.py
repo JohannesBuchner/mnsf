@@ -2,6 +2,7 @@ from mnSpecFit.Model import Model
 from numpy import exp, power, zeros
 from multiFit.priorGen import *
 
+import numexpr as ne
 
 
 
@@ -17,9 +18,12 @@ class BB(Model):
 
 
       def bb(x,logA,kT):
-         
-         val = power(10.,logA)*power(x,2.)*power( exp(x/float(kT)) -1., -1.)
-         return val
+
+          return ne.evaluate('10.**logA * x**2. * ( exp(x/float(kT)) -1.)**-1.')
+            
+          
+        # val = power(10.,logA)*power(x,2.)*power( exp(x/float(kT)) -1., -1.)
+         #return val
 
 
 
