@@ -38,7 +38,7 @@ class PL(Model):
 
 
       
-      self.modName = "powerlaw"
+      self.modName = "PL"
       self.model=pl
       self.prior=PLPrior
       self.n_params = 2
