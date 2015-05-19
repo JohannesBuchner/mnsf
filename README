@@ -1,3 +1,30 @@
 mnSpecFit
 
-This software allows for the fitting of Fermi GBM and LAT data via Bayesian probabilty
+Author: J. Michael Burgess
+
+
+About:
+
+This software allows for the fitting of Fermi GBM and LAT data via Bayesian probabilty. Provided are tools for reading GBM TTE/RSP files,
+PHAI files for LAT LLE and standard data, as well as the tools for fitting and examining fit files. It is built upon the associated multiFit
+package that wraps the MULTINEST Bayesian inference software. A variety of spectral models are provided but can easily be added too.
+
+Currently, three likelihoods are provided: chi2, cstat, and pgstat.
+
+Much work and more documentation are to come....
+
+email: jamesb@kth.se
+
+
+Dependencies:
+
+mulitFit
+
+astropy
+astroML
+numexpr
+numpy
+matplotlib
+cython
+
+
