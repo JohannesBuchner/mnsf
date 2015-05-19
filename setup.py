@@ -11,42 +11,22 @@ from Cython.Build import cythonize
 
 import os
 
-#boost_root = os.environ.get("BOOSTROOT")
-
-#if(boost_root):
-#  #The user want to override pre-defined location of boost
-  
-#  print("\n\n **** Using boost.python from the env. variable $BOOSTROOT (%s)" %(boost_root))
-  
-#  include_dirs = [ os.path.join(boost_root,'include')]
-#  library_dirs = [ os.path.join(boost_root,'lib') ]
-  
-
-#else:
-
-#  include_dirs = []
-#  library_dirs = []
-
-
-
-
 import numpy
 
-import cython_gsl
 
 
 #This is a big kludge
-os.system("gcc -shared -o libsynchrotron.so -fPIC mnSpecFit/synchrotron.c -L/usr/local/lib -lgsl -lgslcblas")
+os.system("gcc -shared -o libsynchrotron.so -fPIC mnSpecFit/synchrotron.c -I/usr/local/include  -L/usr/local/lib -lgsl -lgslcblas")
 os.system("mv libsynchrotron.so /usr/local/lib/")
 os.system("cp mnSpecFit/synchrotron.h /usr/local/include/")
 
-libsynchrotron = ('synchrotron',{'sources':['mnSpecFit/synchrotron.c'],'build_dir':['/usr/local/lib']})
+#libsynchrotron = ('synchrotron',{'sources':['mnSpecFit/synchrotron.c'],'build_dir':['/usr/local/lib']})
 
 
-ext_modules = [Extension("mnSpecFit/Model",["mnSpecFit/Model.pyx"]),
+ext_modules = [Extension("mnSpecFit/Model",["mnSpecFit/Model.pyx"],include_dirs = [numpy.get_include()]),
                Extension("mnSpecFit/synchrotron_glue",["mnSpecFit/synchrotron_glue.pyx"],
             library_dirs=['/usr/local/lib'],
-            libraries=["synchrotron"])]
+            libraries=["synchrotron"],include_dirs = [numpy.get_include()])]
 
 
 
@@ -76,7 +56,7 @@ setup(
     
     #classifiers = [],
 
-    libraries = [libsynchrotron],
+ #   libraries = [libsynchrotron],
     
     ext_modules=cythonize(ext_modules),
         

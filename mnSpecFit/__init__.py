@@ -20,6 +20,12 @@ from MultiPHAReader import MultiPHAReader
 from SpecFitView import SpecFitView
 from SpecCompare import SpecCompare
 
+print
+print "Available Models:"
+print
+for m in models.models.models.keys():
+    print "\t%s"%m
+
 
 #from models.SynchrotronComplex import SynchrotronComplex
 #from models.SynchrotronBB import SynchrotronBB
