@@ -2,6 +2,7 @@ from mnSpecFit.Model import Model
 from numpy import exp, power
 from multiFit.priorGen import *
 
+import numexpr as ne
 
 
 
@@ -16,9 +17,9 @@ class CPL(Model):
 
 
       def cpl(x,logA,index,eFolding):
-         
-         val = power(10.,logA)*power(x/300.,index)*exp(-x/eFolding)
-         return val
+         return ne.evaluate('10.** logA * (x/300.)**index * exp(-x/eFolding)')
+         #val = power(10.,logA)*power(x/300.,index)*exp(-x/eFolding)
+         #return val
 
       
         
