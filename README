@@ -26,5 +26,5 @@ numexpr
 numpy
 matplotlib
 cython
-
+scikit_learn
 
