@@ -39,7 +39,7 @@ class BB(Model):
      
 
       
-      self.modName = "blackbody"
+      self.modName = "BB"
       self.model=bb
       self.prior=BBPrior
       self.n_params = 2

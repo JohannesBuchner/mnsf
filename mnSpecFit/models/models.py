@@ -39,8 +39,8 @@ models = {"Band":Band,\
 #          "ZhaoSynchrotron":ZhaoSynchrotron,\
 #          "FastSynchrotronBB":FastSynchrotronBB,\
  #         "SynchSSC_BB":SynchSSC_BB,\
-          "blackbody":BB,\
-          "powerlaw":PL,\
+          "BB":BB,\
+          "PL":PL,\
 #          "SubPhoto":SubPhoto,\
 #          "BandTable":BandTable,\
 }
