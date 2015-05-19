@@ -1,5 +1,7 @@
 from mnSpecFit import mnSpecFit
 
+from models.models import models as mdls
+
 
 from models.Band import Band
 from models.SBPL import SBPL 
@@ -23,7 +25,7 @@ from SpecCompare import SpecCompare
 print
 print "Available Models:"
 print
-for m in models.models.models.keys():
+for m in mdls.keys():
     print "\t%s"%m
 
 

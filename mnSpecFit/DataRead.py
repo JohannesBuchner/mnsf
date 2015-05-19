@@ -1,6 +1,6 @@
 import astropy.io.fits as fits
 from astropy.table import Table
-import pyqt_fit.kernel_smoothing as smooth
+
 from numpy import logical_and, array, mean, histogram
 
 import matplotlib.pyplot as plt

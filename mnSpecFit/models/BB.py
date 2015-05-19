@@ -19,7 +19,7 @@ class BB(Model):
 
       def bb(x,logA,kT):
 
-          return ne.evaluate('10.**logA * x**2. * ( exp(x/float(kT)) -1.)**-1.')
+          return ne.evaluate('10.**logA * x**2. * ( exp(x/kT) -1.)**-1.')
             
           
         # val = power(10.,logA)*power(x,2.)*power( exp(x/float(kT)) -1., -1.)
