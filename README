@@ -13,6 +13,16 @@ Currently, three likelihoods are provided: chi2, cstat, and pgstat.
 
 Much work and more documentation are to come....
 
+
+INSTALL:
+
+git clone https://github.com/drJfunk/mnsf.git
+cd mnsf
+python setup.py build
+python setup.py install
+
+
+
 email: jamesb@kth.se
 
 
