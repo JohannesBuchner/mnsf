@@ -1,7 +1,6 @@
 from DataRead import DataRead
 import astropy.io.fits as fits
 from astropy.table import Table
-import pyqt_fit.kernel_smoothing as smooth
 from numpy import logical_and, array, mean, histogram, arange
 
 import matplotlib.pyplot as plt
@@ -11,7 +10,7 @@ from binning.tteBinning import tteBinning
 from glob import glob
 
 
-from phaMake.phaMake import phaMake
+#from phaMake.phaMake import phaMake
 
 import os
 import errno
@@ -114,7 +113,7 @@ class GBMReader(DataRead):
         
 
 
-    def CreateCounts(self,start=0,stop=10,pha=True):
+    def CreateCounts(self,start=0,stop=10,pha=False):
         
         
         self.dataBinner.MakeBackgroundSelectionsForDataBinner()
@@ -180,10 +179,10 @@ class GBMReader(DataRead):
                 self.binDict[directory] = tab
 
 
-                if pha:
-                    make_sure_path_exists(self.directory+directory)
-                    exposure = hib-lob # Need to add deadtime????
-                    phaFile = phaMake(self.directory+directory+"/"+self.det,self.dataFile,totalCounts,bkgCounts,bkgError,exposure,lob,hib)
+                # if pha:
+                #     make_sure_path_exists(self.directory+directory)
+                #     exposure = hib-lob # Need to add deadtime????
+                #     phaFile = phaMake(self.directory+directory+"/"+self.det,self.dataFile,totalCounts,bkgCounts,bkgError,exposure,lob,hib)
 
                 
                 j+=1
