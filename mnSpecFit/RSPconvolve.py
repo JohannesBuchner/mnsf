@@ -1,6 +1,6 @@
 from rsp import rsp
 import numpy as np
-from joblib import Parallel, delayed
+#from joblib import Parallel, delayed
 
 class RSPconvolve:
 
