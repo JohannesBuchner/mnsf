@@ -42,8 +42,26 @@ class DataRead:
             tab.write(self.pathExt+self.directory+key+"/"+self.instrument+"_"+self.det+".fits",format="fits",overwrite=True)
 
             
+            self.InfoTxt(self.pathExt+self.directory+key,tab)
+            
+    def InfoTxt(self,dir,tab):
 
+
+        f = open("%s/binInfo.txt"%dir,"w")
+
+        # Write time bins
+        f.write("TSTART:\t%.2f\n"%tab.meta["TMIN"])
+        f.write("TSTOP:\t%.2f\n"%tab.meta["TMAX"])
+
+        # Write Duration
+        f.write("DURATION:\t%.2f\n"%tab.meta["duration"])
         
+        # Write Total Counts
+        f.write("COUNTS:\t%.1f\n"%(tab["total"]).sum())
+        
+        # Write Background
+        f.write("BKG:\t%.1f\n"%(tab["bkg"]).sum())
+        f.close()
         
         
       
