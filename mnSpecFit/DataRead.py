@@ -22,9 +22,10 @@ def make_sure_path_exists(path):
 
 class DataRead:
     
-    def __init__(self,dataFile):
+    def __init__(self,dataFile,pathExt=""):
         
         self.dataFile = dataFile
+        self.pathExt = pathExt
         self.data = fits.open(dataFile)
         self.binDict = dict()
 
@@ -35,10 +36,10 @@ class DataRead:
         for key in self.binDict.keys():
             
             tab = self.binDict[key]
-            make_sure_path_exists(self.directory+key)
+            make_sure_path_exists(self.pathExt+self.directory+key)
             self.tab = tab 
-            print "Writing:\n\t%s"%self.directory+key+"/"+self.instrument+"_"+self.det+".fits"
-            tab.write(self.directory+key+"/"+self.instrument+"_"+self.det+".fits",format="fits",overwrite=True)
+            print "Writing:\n\t%s"%self.pathExt+self.directory+key+"/"+self.instrument+"_"+self.det+".fits"
+            tab.write(self.pathExt+self.directory+key+"/"+self.instrument+"_"+self.det+".fits",format="fits",overwrite=True)
 
             
 
