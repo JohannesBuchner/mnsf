@@ -2,9 +2,14 @@ from multiFit.FitView import FitView
 from astropy.table import Table
 from DataBin import DataBin
 from models.models import models
+
 import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import Grid
+
+
 from numpy import array, cumsum, linspace, sqrt, logspace, log10, mean
 from scipy.stats import ks_2samp
+
 import json
 
 
@@ -132,6 +137,8 @@ class SpecFitView(FitView):
 
         print "Model:\n\t%s"%self.modName
         print "T:%.2f - %.2f"%(self.tmin,self.tmax)
+        print "Detectors:"
+        print self.detectors
         print "\nBest Fit Parameters (1-sigma err):"
 
         marg = self.anal.get_stats()["marginals"]
@@ -335,22 +342,29 @@ class SpecFitView(FitView):
 
         
 
-    def QQ(self,numberOfEnergyPoints,detector):
+    def QQ(self,detector,numberOfEnergyPoints=3):
         '''
         Plot data counts against model counts for each detector
         '''
 
         
-        fig  = plt.figure(180,(5,5))
+        fig  = plt.figure(180,(8,6))
         ax = fig.add_subplot(111)
 
-        #det = array(self.detectors)
+        #grid = Grid(fig,111,nrows_ncols=(3,4),axes_pad=0.1)
+        if detector not in self.detectors:
+            print "Invalid Detector"
+            return
 
         i = self.detectors == detector
-       
-        counts = self.sourceCounts[i][0]
 
         
+        
+
+
+        counts = self.sourceCounts[i][0]
+
+
         mod = self.cntMods[i][0]
 
         mod.SetParams(self.bestFit)
@@ -378,7 +392,7 @@ class SpecFitView(FitView):
 
         minE = min(self.meanChan[i][0])
         maxE = max(self.meanChan[i][0])
-        
+
         enePoints = linspace(minE,maxE,numberOfEnergyPoints)
 
         for i,ep in zip(linspace(0.,1.,numberOfEnergyPoints),enePoints):
@@ -388,12 +402,12 @@ class SpecFitView(FitView):
                 ax.text(i,i+.05,"%.1f keV"%ep,color='k',transform=ax.transAxes,horizontalalignment="right",fontsize=7)
             else:
                  ax.text(i,i-.05,"%.1f keV"%ep,color='k',transform=ax.transAxes,fontsize=7)
-            
+
 
         ax.text(0.55,0.5,"Model Excess",fontsize=8,color="grey",verticalalignment="center",horizontalalignment='center',transform=ax.transAxes,rotation=45)
         ax.text(0.5,0.55,"Data Excess",fontsize=8 ,color="grey",verticalalignment="center",horizontalalignment='center',transform=ax.transAxes,rotation=45)
 
-        
+
         ax.text(.9,.1,"K-S=%.3f"%ks,transform=ax.transAxes,horizontalalignment="right",color="grey")
 
         ax.set_ylim(0,dataMax)
