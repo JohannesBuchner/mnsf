@@ -36,7 +36,7 @@ class Band(Model):
 
 
 
-      self.paramsRanges = [[1.E-6,1.E3,"J"],[1.E2,1.E5,"U"],[-2.,1.,"U"],[-5.5,-2,"U"]]#Changed the prior... should change back
+      self.paramsRanges = [[1.E-6,1.E3,"J"],[1.E2,1.E5,"U"],[-2.,1.,"U"],[-5.5,-1.5,"U"]]#Changed the prior... should change back
                             
 
       

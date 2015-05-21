@@ -35,17 +35,17 @@ class SBPL(Model):
 
             pcosh = zeros(ene.flatten().shape[0])
 
-            pcosh[idx1] = (-arg[idx1]-log(2.0))
-            pcosh[idx2] = (arg[idx2] - log(2.0))
-            pcosh[idx3] = (log( (exp(arg[idx3]) + exp(-arg[idx3]))/2.0 ))
+            pcosh[idx1] = M * breakScale *(-arg[idx1]-log(2.0))
+            pcosh[idx2] = M * breakScale *(arg[idx2] - log(2.0))
+            pcosh[idx3] = M * breakScale *(log( (exp(arg[idx3]) + exp(-arg[idx3]))/2.0 ))
 
-            return numexpr.evaluate( 'M * breakScale * 10.**logN * (ene/pivot)**B * 10.**(pcosh-pcosh_piv) ')
-
-
+            return numexpr.evaluate( '10.**logN * (ene/pivot)**B * 10.**(pcosh-pcosh_piv) ')
 
 
 
-        self.paramsRanges = [[1.E-15,1.E3,"J"],[-5.,1.,"U"],[1E1,1E7,"U"],[.001,9.,"U"],[-5.,-2,"U"]]
+
+
+        self.paramsRanges = [[1.E-15,1.E3,"J"],[-5.,1.,"U"],[1E1,1E7,"U"],[.001,9.,"U"],[-5.,-1.5,"U"]]
                             
 
       

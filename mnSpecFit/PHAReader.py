@@ -143,7 +143,7 @@ class PHAReader(DataRead):
 
                 
         tab.meta["binN"]=directory
-        tab.meta["fileLoc"] = self.directory+directory+"/"
+        tab.meta["fileLoc"] = self.pathExt+self.directory+directory+"/"
 
         
         
