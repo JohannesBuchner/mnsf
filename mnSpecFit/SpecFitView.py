@@ -167,12 +167,13 @@ class SpecFitView(FitView):
         fig = plt.figure(fignum)
         ax = fig.add_subplot(111)
 
-
+        bfColor="#e41a1c"
+        posColor="#377eb8"
         
         yData = []
 
 
-        for params in self.anal.get_equal_weighted_posterior()[::100,:-1]:
+        for params in self.anal.get_equal_weighted_posterior()[::50,:-1]:
 
             tmp = []
 
@@ -191,7 +192,7 @@ class SpecFitView(FitView):
 
         for y in yData:
 
-            ax.plot(self.dataRange,y,"#04B404",alpha=.2) ## modify later
+            ax.plot(self.dataRange,y,posColor,alpha=.2,zorder=-30,linewidth=.9) ## modify later
 
         
 
@@ -199,7 +200,7 @@ class SpecFitView(FitView):
         bfModel = self.dataRange**2*self.model(self.dataRange,*self.bestFit)
         
             
-        ax.plot(self.dataRange,bfModel,"#642EFE",linewidth=1.2) #modify later
+        ax.plot(self.dataRange,bfModel,bfColor,linewidth=1.6) #modify later
         ax.set_xscale('log')
         ax.set_yscale('log')
 
@@ -294,16 +295,18 @@ class SpecFitView(FitView):
 
         
         
-        fig = plt.figure(fignum)
+        fig = plt.figure(fignum,(9,5))
 
         ax = fig.add_subplot(111)
-
-        colorLU = ["#FF0000","#01DF01","#DA81F5","#0101DF","#F781D8","#58D3F7","#FFFF00"]
+        
+        colorLU=["#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00","#ffff33","#a65628","#f781bf","#999999"]
+        #colorLU=["#a6cee3", "#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6"]
+        #colorLU = ["#FF0000","#01DF01","#DA81F5","#0101DF","#F781D8","#58D3F7","#FFFF00"]
 
         for c,chan, color,cw in zip(self.sourceCounts,self.meanChan,colorLU,self.chanWidths):
 
-            #ax.errorbar(chan,c/cw,yerr = sqrt(c/cw),fmt=".", color=color, elinewidth=.5,capsize=.2)
-            ax.errorbar(chan,c/cw,fmt="+", color=color)
+            ax.errorbar(chan,c/cw,yerr = sqrt(c/cw),fmt="o", color=color, elinewidth=.6,capsize=.4,alpha=.75,markersize=4)
+            #ax.errorbar(chan,c/cw,fmt="+", color=color)
 
         
         #ax.legend(self.detectors,loc="lower left")
@@ -318,7 +321,7 @@ class SpecFitView(FitView):
             yData = []
 
 
-            for params in self.anal.get_equal_weighted_posterior()[::100,:-1]:
+            for params in self.anal.get_equal_weighted_posterior()[::50,:-1]:
 
                 mod.SetParams(params)
                     
@@ -327,7 +330,7 @@ class SpecFitView(FitView):
             for y  in yData:
 
 
-                ax.loglog(chan[lo:hi],y,"k",alpha=.1)
+                ax.loglog(chan[lo:hi],y,"k",alpha=.1,zorder=-30)
 
 
 
@@ -335,7 +338,7 @@ class SpecFitView(FitView):
         ax.set_xlim(left=min(self.dataRange), right=max(self.dataRange))
         ax.set_xlabel(self.xlabel)
         ax.set_ylabel(r"cnts s$^{-1}$ keV$^{-1}$")
-        #ax.set_yscale("log", nonposy= "clip")
+        ax.set_yscale("log", nonposy= "clip")
         
         
         return ax
