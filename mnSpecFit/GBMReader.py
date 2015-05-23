@@ -1,4 +1,6 @@
 from DataRead import DataRead
+from PHAMaker import PHAMaker
+
 import astropy.io.fits as fits
 from astropy.table import Table
 from numpy import logical_and, array, mean, histogram, arange
@@ -179,10 +181,13 @@ class GBMReader(DataRead):
                 self.binDict[directory] = tab
 
 
-                # if pha:
-                #     make_sure_path_exists(self.directory+directory)
-                #     exposure = hib-lob # Need to add deadtime????
-                #     phaFile = phaMake(self.directory+directory+"/"+self.det,self.dataFile,totalCounts,bkgCounts,bkgError,exposure,lob,hib)
+                if pha:
+                    make_sure_path_exists(self.directory+directory)
+                    exposure = hib-lob # Need to add deadtime????
+                    phaFile = PHAMaker(self.pathExt+self.directory+directory+"/",self.det,exposure,self.rsp,self.emin,self.emax)
+                    phaFile.SetCounts(totalCounts*exposure)
+                    phaFile.SetBak(bkgCounts,bkgError)
+                    phaFile.Write()
 
                 
                 j+=1

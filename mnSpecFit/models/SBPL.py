@@ -27,7 +27,6 @@ class SBPL(Model):
             else:
                 pcosh_piv = M * breakScale * (log( (exp(arg_piv) + exp(-arg_piv))/2.0 ))
 
-
             arg = numexpr.evaluate('log10(ene/breakE)/breakScale')
             idx1 =  arg < -6.0
             idx2 =  arg >  4.0
@@ -45,7 +44,7 @@ class SBPL(Model):
 
 
 
-        self.paramsRanges = [[1.E-15,1.E3,"J"],[-5.,1.,"U"],[1E1,1E7,"U"],[.001,9.,"U"],[-5.,-1.5,"U"]]
+        self.paramsRanges = [[1.E-15,1.E3,"J"],[-5.,1.,"U"],[1E1,1E7,"U"],[.001,5.,"U"],[-5.,-1.5,"U"]]
                             
 
       
