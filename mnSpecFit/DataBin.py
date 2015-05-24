@@ -138,6 +138,32 @@ class DataBin:
 
         return (self.berr[self.activeLoChan:self.activeHiChan+1])
 
+    def SelectEnergies(self,selection):
+
+        # Make sure you've got an array
+        selection = array(selection)
+
+        if len(selection.shape) == 1:
+
+                tmp = map(self._GetChannel,selection)
+
+                tt = [False]*len(self.meanChan)
+                
+                tt[tmp[0]:tmp[1]+1] = True*(tmp[1]-tmp[0]+1)
+
+        elif len(selection.shape) == 2:
+
+                tmp = map(lambda x: [db._GetChannel(x[0]),db._GetChannel(x[1])] , selection)
+
+                tt = [False]*len(self.meanChan)
+
+                for x in tmp:
+                    tt[x[0]:x[1]+1] = [True]*(x[1]+1-x[0])
+        tt = array(tt)
+
+
+        self._energySelection = tt
+    
     def ViewCountSpectrum(self):
 
 
@@ -155,3 +181,5 @@ class DataBin:
         
         ax.vlines(self.chanMin[self.activeLoChan],minRate,max(rate),color="r")
         ax.vlines(self.chanMax[self.activeHiChan],minRate,max(rate),color="b")
+
+        ax.set_xlabel("Energy (keV)")
