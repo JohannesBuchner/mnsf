@@ -76,13 +76,14 @@ class SpecFitView(FitView):
         self.dof = fit["dof"]
 
         self.cntMods = []
-        self.activeLos = []
-        self.activeHis = []
+        self.energySel =[]
+        #self.activeLos = []
+        #self.activeHis = []
         #load counts and model counts
-        for det ,lo, hi  in zip(self.detectors,fit["loEne"],fit["hiEne"]):
+        for det ,sel  in zip(self.detectors,fit["chans"]):
 
             db = DataBin(self.dataBinExt+det+".fits")
-
+ 
             if self._composite:
 
                 mod = (models[compositeModels[0]])()
@@ -105,12 +106,14 @@ class SpecFitView(FitView):
             
             self.sourceCounts.append(db.source)
 
-            db.SetLoChan(lo)
-            db.SetHiChan(hi)
-            loIndex = db.activeLoChan
-            hiIndex = db.activeHiChan
-            self.activeLos.append(loIndex)
-            self.activeHis.append(hiIndex+1)
+            #db.SetLoChan(lo)
+            #db.SetHiChan(hi)
+            #loIndex = db.activeLoChan
+            #hiIndex = db.activeHiChan
+            #self.activeLos.append(loIndex)
+            #self.activeHis.append(hiIndex+1)
+            self.energySel.append(array(sel))
+            db._energySelection = array(sel)
 
         #Move all of these to arrays
         self.sourceCounts = array(self.sourceCounts)
@@ -303,9 +306,9 @@ class SpecFitView(FitView):
         #colorLU=["#a6cee3", "#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6"]
         #colorLU = ["#FF0000","#01DF01","#DA81F5","#0101DF","#F781D8","#58D3F7","#FFFF00"]
 
-        for c,chan, color,cw in zip(self.sourceCounts,self.meanChan,colorLU,self.chanWidths):
+        for c,chan, color,cw,sel in zip(self.sourceCounts,self.meanChan,colorLU,self.chanWidths,self.energySel):
 
-            ax.errorbar(chan,c/cw,yerr = sqrt(c/cw),fmt="o", color=color, elinewidth=.6,capsize=.4,alpha=.75,markersize=4)
+            ax.errorbar(chan[sel],(c/cw)[sel],yerr = sqrt(c/cw)[sel],fmt="o", color=color, elinewidth=.6,capsize=.4,alpha=.75,markersize=4)
             #ax.errorbar(chan,c/cw,fmt="+", color=color)
 
         
@@ -316,7 +319,7 @@ class SpecFitView(FitView):
         # and the matrix is convolved to get
         # model counts
 
-        for mod,chan,cw,lo,hi in zip(self.cntMods,self.meanChan,self.chanWidths,self.activeLos,self.activeHis):
+        for mod,chan,cw,sel in zip(self.cntMods,self.meanChan,self.chanWidths,self.energySel):
 
             yData = []
 
@@ -325,12 +328,12 @@ class SpecFitView(FitView):
 
                 mod.SetParams(params)
                     
-                yData.append(mod.GetModelCnts()[lo:hi]/cw[lo:hi])
+                yData.append(mod.GetModelCnts()[sel]/cw[sel])
 
             for y  in yData:
 
 
-                ax.loglog(chan[lo:hi],y,"k",alpha=.1,zorder=-30)
+                ax.loglog(chan[sel],y,"k",alpha=.1,zorder=-30)
 
 
 

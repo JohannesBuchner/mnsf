@@ -208,8 +208,8 @@ class mnSpecFit(mnfit):
         dof = -self.n_params
         for det in self.detList:
 
-            #loChans.append(det.emin)
-            #hiChans.append(det.emax)
+            loChans.append(det.emin)
+            hiChans.append(det.emax)
             chans.append(det._energySelection.tolist())
             detectors.append(det.instrument+"_"+det.det)
             rsps.append(det.rsp)
@@ -229,8 +229,8 @@ class mnSpecFit(mnfit):
                "stat":self.lhs[0].statName,\
                "dof":dof,\
                "chans":chans,\
-               #"loEne":loChans,\
-               #"hiEne":hiChans,\
+               "loEne":loChans,\
+               "hiEne":hiChans,\
                "tmin":self.detList[0].tmin,\
                "tmax":self.detList[0].tmax\
         }
@@ -263,12 +263,23 @@ class mnSpecFit(mnfit):
         s+="Plot.yLog = True\n\n"
         sNum = 0
         for det in self.detList:
-            s+="s%d = Spectrum(\"%s{1}\")\n"%(sNum,det.file)
-            s+="s%d.ignore(\"**-%.1f %.1f-**\")\n\n"%(sNum,det.chanMin[det.activeLoChan],det.chanMax[det.activeHiChan])
+            s+="s%d = Spectrum(\"%s\")\n"%(sNum,det.fileLoc+det.det+".pha")
+
+            s+="s%d.ignore(\"**-%.2f "%(sNum,det.selMins[0])
+            if len(det.selMins)>1:
+                
+                for x,y in zip(det.selMins[1:],det.selMaxs[:-1]):
+
+                    s+=" %.2f-%.2f "%(y,x)
+
+            
+            s+="%.2f-**\")\n\n"%(det.selMaxs[-1])
             sNum+=1
-        s+="\n\nFit.statMethod = \"%s\"\n"%self.lhs[0].statName
-        s+="Fit.nIterations = 100000\n\n"
+
         s+="m = Model(\" \")\n"
+        s+="\n\nFit.statMethod = \"%s\"\n"%self.lhs[0].statName
+        s+="Fit.nIterations = 10000\n\n"
+        
         s+="\nFit.perform()\n"
 
         f = open("xspecTemplate.py","w")

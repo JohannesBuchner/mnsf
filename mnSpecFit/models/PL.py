@@ -23,7 +23,7 @@ class PL(Model):
 
       
 
-      self.paramsRanges = [[1.E-15,1.E3,"J"],[-2.,2,"U"]]
+      self.paramsRanges = [[1.E-15,1.E3,"J"],[-3.,3.,"U"]]
                             
 
       
@@ -42,7 +42,7 @@ class PL(Model):
       self.model=pl
       self.prior=PLPrior
       self.n_params = 2
-      self.parameters = [r"logN$_{\rm PL}$",r"$\delta$"]
+      self.parameters = [r"logN$_{\rm PL}$",r"$PhoIndex$"]
 
       self._modelDict = {"params":self.parameters,\
                          "model":pl\

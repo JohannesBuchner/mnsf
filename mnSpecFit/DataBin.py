@@ -106,42 +106,45 @@ class DataBin:
 
     def GetTotalCounts(self):
 
-        return (self.total[self.activeLoChan:self.activeHiChan+1])*self.duration
+        return (self.total[self._energySelection])*self.duration
 
     def GetTotalRate(self):
 
-        return (self.total[self.activeLoChan:self.activeHiChan+1])
+        return (self.total[self._energySelection])
 
     def GetSourceCounts(self):
 
-        return (self.source[self.activeLoChan:self.activeHiChan+1])*self.duration
+        return (self.source[self._energySelection])*self.duration
 
     def GetSourceRate(self):
 
-        return (self.source[self.activeLoChan:self.activeHiChan+1])
+        return (self.source[self._energySelection])
 
 
     def GetBkgCounts(self):
 
-        return (self.bkg[self.activeLoChan:self.activeHiChan+1])*self.duration
+        return (self.bkg[self._energySelection])*self.duration
 
     def GetBkgRate(self):
 
-        return (self.bkg[self.activeLoChan:self.activeHiChan+1])
+        return (self.bkg[self._energySelection])
 
 
     def GetBkgErr(self):
 
-        return (self.berr[self.activeLoChan:self.activeHiChan+1])*self.duration
+        return (self.berr[self._energySelection])*self.duration
 
     def GetBkgErrRate(self):
 
-        return (self.berr[self.activeLoChan:self.activeHiChan+1])
+        return self.berr[self._energySelection]
+        #return (self.berr[self.activeLoChan:self.activeHiChan+1])
 
     def SelectEnergies(self,selection):
 
         # Make sure you've got an array
         selection = array(selection)
+        self.selMins = []
+        self.selMaxs = []
 
         if len(selection.shape) == 1:
 
@@ -149,16 +152,31 @@ class DataBin:
 
                 tt = [False]*len(self.meanChan)
                 
-                tt[tmp[0]:tmp[1]+1] = True*(tmp[1]-tmp[0]+1)
+                tt[tmp[0]:tmp[1]+1] = [True]*(tmp[1]-tmp[0]+1)
+
+                self.emin = min(selection)
+                self.emax = max(selection)
+
+                self.selMins.append(self.chanMin[tmp[0]])
+                self.selMaxs.append(self.chanMax[tmp[1]])
 
         elif len(selection.shape) == 2:
 
-                tmp = map(lambda x: [db._GetChannel(x[0]),db._GetChannel(x[1])] , selection)
+                tmp = array(map(lambda x: [self._GetChannel(x[0]),self._GetChannel(x[1])] , selection))
 
                 tt = [False]*len(self.meanChan)
 
                 for x in tmp:
+
                     tt[x[0]:x[1]+1] = [True]*(x[1]+1-x[0])
+
+                self.selMins = self.chanMin[tmp[:,0]]
+                self.selMaxs = self.chanMax[tmp[:,1]]
+
+                self.emin = selection.min()
+                self.emax = selection.max()
+
+                    
         tt = array(tt)
 
 
