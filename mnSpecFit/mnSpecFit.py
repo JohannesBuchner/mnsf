@@ -54,7 +54,7 @@ class mnSpecFit(mnfit):
        
 
 
-    def SetEnergyBounds(self,detector,lo,hi):
+    def SetEnergyBounds(self,detector, selection):
         '''
         Set the energy bounds of a detector
 
@@ -72,11 +72,13 @@ class mnSpecFit(mnfit):
 
             if db.det == detector:
 
-                db.SetHiChan(hi)   # Call DataBin method for channel 
-                db.SetLoChan(lo)   # selection
+                db.SelectEnergies(selection)
+                #db.SetHiChan(hi)   # Call DataBin method for channel 
+                #db.SetLoChan(lo)   # selection
 
-                print "Detector %s ignoring channels (0-%d) and (%d-%d)"%(detector,db.activeLoChan,db.activeHiChan,len(db.total))
-                print "%d active PHA channel"%len(db.GetTotalCounts())
+                #print "Detector %s ignoring channels (0-%d) and (%d-%d)"%(detector,db.activeLoChan,db.activeHiChan,len(db.total))
+                print "%d active PHA channels"%len(db.GetTotalCounts())
+                print
                 return
         print "\n Detector: %s has not been loaded!  \n"%detector
             
@@ -162,7 +164,7 @@ class mnSpecFit(mnfit):
                 
                 modCnts = mod.GetModelCnts() # convolve the matrix and return counts
                 
-                lh.SetModelCounts(modCnts[det.activeLoChan:det.activeHiChan+1]) #pass model counts to lh
+                lh.SetModelCounts(modCnts[det._energySelection]) #pass model counts to lh
 
                 # Here the DataBin objects' source and background
                 # counts are sent to the likelihood object
@@ -201,11 +203,14 @@ class mnSpecFit(mnfit):
         rsps = []
         loChans = []
         hiChans = []
+        chans = []
+        
         dof = -self.n_params
         for det in self.detList:
 
-            loChans.append(det.emin)
-            hiChans.append(det.emax)
+            #loChans.append(det.emin)
+            #hiChans.append(det.emax)
+            chans.append(det._energySelection.tolist())
             detectors.append(det.instrument+"_"+det.det)
             rsps.append(det.rsp)
             dof += len(det.GetTotalCounts())
@@ -223,8 +228,9 @@ class mnSpecFit(mnfit):
                "model":self.models[0].modName,\
                "stat":self.lhs[0].statName,\
                "dof":dof,\
-               "loEne":loChans,\
-               "hiEne":hiChans,\
+               "chans":chans,\
+               #"loEne":loChans,\
+               #"hiEne":hiChans,\
                "tmin":self.detList[0].tmin,\
                "tmax":self.detList[0].tmax\
         }
