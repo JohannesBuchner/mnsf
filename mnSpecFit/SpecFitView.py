@@ -4,6 +4,8 @@ from DataBin import DataBin
 from models.models import models
 
 import matplotlib.pyplot as plt
+import matplotlib.lines as mlines
+
 from mpl_toolkits.axes_grid1 import Grid
 
 
@@ -237,14 +239,15 @@ class SpecFitView(FitView):
         fig = plt.figure(fignum)
         ax = fig.add_subplot(111)
         #model = models[self.modName]() #Remember that models must be instantiated!!
-        
-        bfColors = ["#FF0040","#2E2EFE","#01DF3A"]
+
+        #bfColors = ["#FF0040","#2E2EFE","#01DF3A"]
+        bfColors = ["#66c2a5","#8da0cb","#fc8d62","#e78ac3"]
         #contourColors = ["#AC58FA","#FF00FF","#088A29"]
         #First get the components
         
         components = self._componentLU.keys()
         
-            
+        leg = []
         colorIndex = 0
         for comp in components:
             
@@ -260,7 +263,7 @@ class SpecFitView(FitView):
             yData = self.dataRange**2*thisComp["model"](self.dataRange, *bfParams) #Computes vFv
 
 
-            ax.loglog(self.dataRange,yData,color="k")
+            ax.loglog(self.dataRange,yData,color="k",linewidth=1.4)
             
 
             #Now Plot the contours
@@ -279,10 +282,15 @@ class SpecFitView(FitView):
 
             for y in yData:
 
-                ax.loglog(self.dataRange,y,color=bfColors[colorIndex],alpha=.2) ## modify later
+                ax.loglog(self.dataRange,y,color=bfColors[colorIndex],alpha=.3,linewidth=.9,zorder=-30) ## modify later
 
+            line = mlines.Line2D([], [],linewidth=1,linestyle="-",color=bfColors[colorIndex])
+
+            leg.append(line)
+            
             colorIndex+=1    
         ax.set_xlim(min(self.dataRange),max(self.dataRange))
+        ax.legend(leg,components)
         ax.set_ylim(bottom=10)
         ax.set_xlabel(self.xlabel)
         ax.set_ylabel(r"$\nu F_{\nu}$ [keV$^2$ s$^{-s}$ cm$^{-2}$ keV$^{-1}$]")

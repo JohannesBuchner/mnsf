@@ -23,7 +23,7 @@ class CPL(Model):
 
       
         
-      self.paramsRanges = [[1.E-10,1.E5,"J"],[-2.,1.,"U"],[1.E1,4.E4,"U"]]
+      self.paramsRanges = [[1.E-10,1.E5,"J"],[-2.,1.,"U"],[1.E1,1.E6,"U"]]
 
 
       def CPLPrior(params, ndim, nparams):
