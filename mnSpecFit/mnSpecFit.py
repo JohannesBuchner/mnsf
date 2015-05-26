@@ -5,6 +5,19 @@ from numpy import array
 from astropy.table import Table
 import json
 
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+
+
 class mnSpecFit(mnfit):
 
 
@@ -77,10 +90,10 @@ class mnSpecFit(mnfit):
                 #db.SetLoChan(lo)   # selection
 
                 #print "Detector %s ignoring channels (0-%d) and (%d-%d)"%(detector,db.activeLoChan,db.activeHiChan,len(db.total))
-                print "%d active PHA channels"%len(db.GetTotalCounts())
+                print bcolors.OKBLUE + bcolors.UNDERLINE +  "%d active PHA channels \033[0m"  %len(db.GetTotalCounts()) 
                 print
                 return
-        print "\n Detector: %s has not been loaded!  \n"%detector
+        print bcolors.FAIL + "\n Detector: %s has not been loaded! \033[0m  \n"%detector 
             
 
 
@@ -239,7 +252,7 @@ class mnSpecFit(mnfit):
         
         json.dump(out,f) # Write to a JSON file
         print
-        print "Wrote "+self.outfilesDir+self.savefile
+        print bcolors.BOLD + bcolors.HEADER  + "Wrote "+self.outfilesDir+self.savefile + bcolors.ENDC
         print
         print
         
@@ -249,8 +262,8 @@ class mnSpecFit(mnfit):
 
     def _PreFitInfo(self):
 
-        print "Starting fit of model:"
-        print "\t%s"%self.models[0].modName
+        print bcolors.WARNING + "Starting fit of model:" + bcolors.ENDC
+        print bcolors.OKGREEN + "\t%s"%self.models[0].modName + bcolors.ENDC
         print
 
     def _MakeXspecTemplate(self):
