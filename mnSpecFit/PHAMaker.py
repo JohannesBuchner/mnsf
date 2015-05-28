@@ -97,7 +97,7 @@ class PHAMaker(object):
         col2 = fits.Column(name='E_MAX', format='1E', unit="keV",array=self.emax)
         col3 = fits.Column(name='E_MIN', format='1E', unit="keV",array=self.emin)
 
-        cols = fits.ColDefs([col1, col2, col3])
+        cols = fits.ColDefs([col1, col3, col2])
 
         ebHDU = fits.TableHDU.from_columns(cols)
 

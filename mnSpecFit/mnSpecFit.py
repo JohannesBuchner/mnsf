@@ -263,7 +263,7 @@ class mnSpecFit(mnfit):
     def _PreFitInfo(self):
 
         print bcolors.WARNING + "Starting fit of model:" + bcolors.ENDC
-        print bcolors.OKGREEN + "\t%s"%self.models[0].modName + bcolors.ENDC
+        print bcolors.OKBLUE + "\t%s"%self.models[0].modName + bcolors.ENDC
         print
 
     def _MakeXspecTemplate(self):

@@ -84,10 +84,15 @@ class GBMReader(DataRead):
         print "Found RSP: "+rsp
         self.rsp = rsp
             
+        # We need to take the ebounds from the RSP.... because the TTE
+        # is wrong.... goddamn you GBM. Goddamn you.
 
+
+        tmpRSP = fits.open(rsp)
+        
             
-        self.emin = self.data[1].data["E_MIN"]
-        self.emax = self.data[1].data["E_MAX"]
+        self.emin = tmpRSP["EBOUNDS"].data["E_MIN"]
+        self.emax = tmpRSP["EBOUNDS"].data["E_MAX"]
 
         chans = array(zip(self.emin,self.emax))
 

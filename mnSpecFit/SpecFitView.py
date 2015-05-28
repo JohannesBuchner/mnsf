@@ -121,7 +121,7 @@ class SpecFitView(FitView):
         self.sourceCounts = array(self.sourceCounts)
         self.meanChan = array(self.meanChan)
         self.cntMods = array(self.cntMods)
-
+        self.energySel = array(self.energySel)
 
         
         
@@ -376,18 +376,24 @@ class SpecFitView(FitView):
         
 
 
-        counts = self.sourceCounts[i][0]
-
+        counts = array(self.sourceCounts[i][0])
+        sel = self.energySel[i][0]
 
         mod = self.cntMods[i][0]
 
         mod.SetParams(self.bestFit)
 
-        modelCounts = mod.GetModelCnts()
+        modelCounts = array(mod.GetModelCnts())
 
-        cumCounts = cumsum(counts)
-        cumModel = cumsum(modelCounts)
+        #print sel
+        counts[counts<0.]=0.
+        
+        cumCounts = cumsum(counts[sel])
+        cumModel = cumsum(modelCounts[sel])
 
+        
+
+        
         # Plot the center line
         dataMax = max(max(cumModel),max(cumCounts))
         line = linspace(0,dataMax,1000)
